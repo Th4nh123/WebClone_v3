@@ -7,6 +7,7 @@ use App\Http\Controllers\BlackListController;
 use App\Http\Controllers\KeyController;
 use App\Http\Controllers\KeyGoogleController;
 use App\Http\Controllers\KeyYoutubeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UrlController;
 
 /*
@@ -45,14 +46,15 @@ Route::controller(KeyController::class)->group(function () {
 });
 
 Route::controller(UrlController::class)->group(function () {
-    Route::post('/rd/xml/a/save-url/{id_key}', 'Admin\ToolCloneController@saveUrl')->name('save_url');
-    Route::get('/rd/xml/a/delete-url/{id_url}', 'Admin\ToolCloneController@xoaURL')->name('xoaURL');
-    Route::get('/rd/xml/a/get-url/{id_key}', 'Admin\ToolCloneController@getUrl')->name('get-url');
-    Route::get('/rd/xml/a/get-url-by-id/{id_url}', 'Admin\ToolCloneController@getUrlById')->name('get-url-by-id');
-    Route::get('/rd/xml/a/get-url-by-id-key/{id_key}', 'Admin\ToolCloneController@getUrlByIdKey')->name('get-url-by-id-key');
-    Route::get('/rd/xml/a/get-url-by-id-key2/{id_key}', 'Admin\ToolCloneController@getUrlByIdKey2')->name('get-url-by-id-key2');
-    Route::get('/rd/xml/a/find-like-url/{name}', 'Admin\ToolCloneController@findLikeUrl')->name('findLikeUrl');
-    Route::get('/rd/xml/a/reset-url/{id_key}', 'Admin\ToolCloneController@resetUrl')->name('reset-url');
+    Route::post('/rd/xml/a/save-url/{id_key}', 'saveUrl')->name('save_url');
+    Route::get('/rd/xml/a/delete-url/{id_url}', 'xoaURL')->name('xoaURL');
+    Route::get('/rd/xml/a/get-url/{id_key}', 'getUrl')->name('get-url');
+    Route::get('/rd/xml/a/get-url-by-id/{id_url}', 'getUrlById')->name('get-url-by-id');
+    Route::get('/rd/xml/a/get-url-by-id-key/{id_key}', 'getUrlByIdKey')->name('get-url-by-id-key');
+    Route::get('/rd/xml/a/get-url-by-id-key2/{id_key}', 'getUrlByIdKey2')->name('get-url-by-id-key2');
+    Route::get('/rd/xml/a/find-like-url/{name}', 'findLikeUrl')->name('findLikeUrl');
+    Route::get('/rd/xml/a/reset-url/{id_key}', 'resetUrl')->name('reset-url');
+    Route::get('/rd/xml/a/delete-url-by-id-key/{id_key}', 'xoaURLByIdKey')->name('xoaURLByIdKey');
 });
 
 
@@ -62,25 +64,19 @@ Route::controller(BlackListController::class)->group(function () {
     Route::post('/rd/xml/a/delete-black-list', 'deleteBlackKey');
     Route::post('/rd/xml/a/delete-all-black-list/{id_cam}', 'deleteAllBlackKeyByIdCam');
 });
-// Route::get('/rd/xml/a/delete-black-list/{id}', 'Admin\ToolCloneController@xoaBlackKey')->name('xoaBlackKey');
-// Route::get('/rd/xml/a/delete-all-black-list/{id_cam}', 'Admin\ToolCloneController@xoaAllBlackKey')->name('xoaAllBlackKey');
-// Route::get('/rd/xml/a/delete-url-by-id-key/{id_key}', 'Admin\ToolCloneController@xoaURLByIdKey')->name('xoaURLByIdKey');
-// Route::get('/rd/xml/a/delete-post-by-id-key/{id_key}', 'Admin\ToolCloneController@xoaPostByIdKey')->name('xoaPostByIdKey');
 
-
-
-
-// Route::get('/rd/xml/a/get-bai-viet-all', 'Admin\ToolCloneController@getBaiVietAll')->name('get-bv-all');
-// Route::get('/rd/xml/a/get-detail-post/{id}', 'Admin\ToolCloneController@getDetailPost')->name('get-bv-all');
+Route::controller(PostController::class)->group(function () {
+    Route::get('/rd/xml/a/delete-post-by-id-key/{id_key}', 'xoaPostByIdKey');
+    Route::get('/rd/xml/a/save-image-by-id-key/{id_key}', 'saveImgByKey');
+    Route::get('/rd/xml/a/get-bai-viet-all', 'getBaiVietAll')->name('get-bv-all');
+    Route::get('/rd/xml/a/get-detail-post/{id}', 'getDetailPost')->name('get-bv-all');
+});
 
 // Route::get('/rd/xml/a/create_toplist/{id}', 'Admin\ToolCloneController@taoBaiTH')->name('create_toplist');
 
 
 // Route::get('/rd/xml/a/get-key-none-url/{id_cam}','Admin\ToolCloneController@getKeyNoneUrl');
 // Route::post('/rd/xml/a/save-key-by-id-cam/{id_cam}', 'Admin\ToolCloneController@saveKeyByIdCam')->name('save_key_by_id_cam');
-
-// Route::get('/rd/xml/a/get-spin-word-by-id-cam/{id_cam}','Admin\ToolCloneController@getSpinWordByIdCam');
-// Route::post('/rd/xml/a/save-spin-word-by-id-cam/{id_cam}', 'Admin\ToolCloneController@saveSpinWordByIdCam')->name('save_spin-word_by_id_cam');
 
 // Route::get('/rd/xml/a/get-count-check-url-by-id-cam/{id_cam}','Admin\ToolCloneController@getCountCheckURLByIdCam');
 // Route::post('/rd/xml/a/save-video', 'Admin\ToolCloneController@saveVideo')->name('save_video');
@@ -95,11 +91,12 @@ Route::controller(KeyGoogleController::class)->group(function () {
     Route::get('/rd/xml/a/get-all-key-google', 'getAllKeyGoogle');
     Route::get('/rd/xml/a/get-key-google', 'getValidKeyGoogle');
     Route::get('/rd/xml/a/get-next-key-google/{key}', 'getNextKeyGoogle');
-    Route::get('/rd/xml/a/get-first-key-google', 'getFistKeyGoogle');
+    Route::get('/rd/xml/a/get-first-key-google', 'getFirstKeyGoogle');
     Route::post('/rd/xml/a/save-key-google', 'saveKeyGoogle');
     Route::post('/rd/xml/a/delete-key-google', 'deleteKeyGoogle');
     Route::post('/rd/xml/a/delete-all-key-google', 'deleteAllKeyGoogle');
     Route::get('/rd/xml/a/update-count-key-google/{key_gg}', 'updateCountKeyGoogle');
+    Route::post('/rd/xml/a/reset-all-key-google', 'resetAllKeyGoogle');
 });
 
 // Route::get('/rd/xml/a/get-ky-hieu/{id_key}','Admin\ToolCloneController@getKyHieu');
@@ -114,36 +111,21 @@ Route::controller(KeyGoogleController::class)->group(function () {
 // Route::get('/rd/xml/a/get-all-key-google', 'Admin\ToolCloneController@getAllKeyGoogle');
 // Route::post('/rd/xml/a/save-key-google', 'Admin\ToolCloneController@saveKeyGoogle')->name('save_key_google');
 // Route::get('/rd/xml/a/delete-key-google/{id_key_gg}', 'Admin\ToolCloneController@deleteKeyGoogle')->name('delete_key_google');
-// Route::get('/rd/xml/a/reset-all-key-google', 'Admin\ToolCloneController@resetAllKeyGoogle');
 
 Route::controller(KeyYoutubeController::class)->group(function () {
+    Route::get('/rd/xml/a/get-key-youtube', 'getKeyYoutube');
     Route::get('/rd/xml/a/get-all-key-youtube', 'getAllKeyYoutube');
     Route::post('/rd/xml/a/save-key-youtube', 'saveKeyYoutube');
     Route::post('/rd/xml/a/delete-key-youtube', 'deleteKeyYoutube');
     Route::post('/rd/xml/a/delete-all-key-youtube', 'deleteAllKeyYoutube');
-    Route::get('/rd/xml/a/update-count-key-youtube/{key_yt}', 'updateCountKeyYoutube');
-    Route::get('/rd/xml/a/get-key-youtube', 'getKeyYoutube');
+    Route::post('/rd/xml/a/update-count-key-youtube/{key_yt}', 'updateCountKeyYoutube');
     Route::get('/rd/xml/a/get-next-key-youtube/{key}', 'getNextKeyYoutube');
-    Route::get('/rd/xml/a/get-first-key-youtube', 'getFistKeyYoutube');
-    Route::get('/rd/xml/a/reset-all-key-youtube', 'resetAllKeyYoutube');
-    Route::get('/rd/xml/a/update-vi-tri/{id_key}', 'updateViTri');
-    Route::get('/rd/xml/a/update-count-request/{count_y}/{count_g}/{id_key}', 'updateCountRequest');
+    Route::get('/rd/xml/a/get-first-key-youtube', 'getFirstKeyYoutube');
+    Route::post('/rd/xml/a/reset-all-key-youtube', 'resetAllKeyYoutube');
+    Route::post('/rd/xml/a/update-vi-tri/{id_key}', 'updateViTri');
+    Route::post('/rd/xml/a/update-count-request/{count_y}/{count_g}/{id_key}', 'updateCountRequest');
     Route::get('/rd/xml/a/get-total-request/{id_cam}', 'getTotalRequest');
-    Route::get('/rd/xml/a/save-image-by-id-key/{id_key}', 'saveImgByKey');
 });
-
-// Route::get('/rd/xml/a/update-count-key-youtube/{key}', 'Admin\ToolCloneController@updateCountKeyYoutube');
-// Route::get('/rd/xml/a/get-key-youtube', 'Admin\ToolCloneController@getKeyYoutube');
-// Route::get('/rd/xml/a/get-next-key-youtube/{key}', 'Admin\ToolCloneController@getNextKeyYoutube');
-// Route::get('/rd/xml/a/get-first-key-youtube', 'Admin\ToolCloneController@getFistKeyYoutube');
-// Route::get('/rd/xml/a/get-all-key-youtube', 'Admin\ToolCloneController@getAllKeyYoutube');
-// Route::post('/rd/xml/a/save-key-youtube', 'Admin\ToolCloneController@saveKeyYoutube')->name('save_key_youtube');
-// Route::get('/rd/xml/a/delete-key-youtube/{id_key_gg}', 'Admin\ToolCloneController@deleteKeyGoogle')->name('delete_key_youtube');
-// Route::get('/rd/xml/a/reset-all-key-youtube', 'Admin\ToolCloneController@resetAllKeyYoutube');
-// Route::get('/rd/xml/a/update-vi-tri/{id_key}', 'Admin\ToolCloneController@updateViTri');
-// Route::get('/rd/xml/a/update-count-request/{count_y}/{count_g}/{id_key}', 'Admin\ToolCloneController@updateCountRequest');
-// Route::get('/rd/xml/a/get-total-request/{id_cam}', 'Admin\ToolCloneController@getTotalRequest');
-// //Route::get('/rd/xml/a/save-image-by-id-key/{id_key}', 'Admin\ToolCloneController@saveImgByKey');
 
 // Route::get('/rd/xml/a/export/{from}/{to}/{id_cam}','Admin\ToolCloneController@export_js');
 // Route::get('/rd/xml/a/export_txt/{from}/{to}/{id_cam}','Admin\ToolCloneController@export_txt_rd');

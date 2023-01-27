@@ -108,11 +108,23 @@ class KeyGoogleController extends Controller
         }
     }
 
-    public function resetAllKeyGoogle() {
-        HwpKeyGoogle::where("type", '=', 'google')->update(["count" => 0]);
+    public function getFirstKeyGoogle()
+    {
+        return HwpKeyGoogle::where("type", '=', 'google')->where("count", '=', '100')->first();
     }
 
-    public function resetAllKeyYoutube() {
-        HwpKeyGoogle::where("type", '=', 'youtube')->update(["count" => 0]);
+    public function resetAllKeyGoogle()
+    {
+        if (HwpKeyGoogle::where("type", '=', 'google')->update(["count" => 0])) {
+            return [
+                'message' => 'Reset count key google thành công',
+                'success' => true
+            ];
+        } else {
+            return [
+                'message' => 'Reset count key google thất bại',
+                'success' => false
+            ];
+        }
     }
 }

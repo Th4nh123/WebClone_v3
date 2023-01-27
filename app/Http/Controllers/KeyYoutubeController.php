@@ -7,11 +7,13 @@ use App\Models\HwpKeyGoogle;
 
 class KeyYoutubeController extends Controller
 {
-    public function getAllKeyYoutube() {
+    public function getAllKeyYoutube()
+    {
         return HwpKeyGoogle::where("type", '=', 'youtube')->get();
     }
 
-    public function saveKeyYoutube(Request $request) {
+    public function saveKeyYoutube(Request $request)
+    {
         $arr = [];
         foreach ($request->data_json as $value) {
             array_push($arr, $value['key_api']);
@@ -58,7 +60,7 @@ class KeyYoutubeController extends Controller
 
     public function deleteAllKeyYoutube()
     {
-        if (HwpKeyGoogle::where("type","=","youtube")->delete()) {
+        if (HwpKeyGoogle::where("type", "=", "youtube")->delete()) {
             return [
                 'message' => 'Xóa thành công tất cả Key Youtube',
                 'success' => true
@@ -74,12 +76,12 @@ class KeyYoutubeController extends Controller
     public function updateCountKeyYoutube(HwpKeyGoogle $key_yt)
     {
         $count_key = [];
-        if($key_yt->count >= 0 && $key_yt->count < 500) {
+        if ($key_yt->count >= 0 && $key_yt->count < 500) {
             $count_key = ["count" => $key_yt->count + 1];
         } else {
             $count_key = ["count" => 500];
         }
-        
+
         if ($key_yt->update($count_key)) {
             return [
                 'message' => 'Update count key youtube thành công',
@@ -88,6 +90,26 @@ class KeyYoutubeController extends Controller
         } else {
             return [
                 'message' => 'Update count key youtube thất bại',
+                'success' => false
+            ];
+        }
+    }
+
+    public function getFirstKeyYoutube()
+    {
+        return HwpKeyGoogle::where("type", '=', 'youtube')->where("count", '=', '500')->first();
+    }
+
+    public function resetAllKeyYoutube()
+    {
+        if (HwpKeyGoogle::where("type", '=', 'youtube')->update(["count" => 0])) {
+            return [
+                'message' => 'Reset count key youtube thành công',
+                'success' => true
+            ];
+        } else {
+            return [
+                'message' => 'Reset count key youtube thất bại',
                 'success' => false
             ];
         }
