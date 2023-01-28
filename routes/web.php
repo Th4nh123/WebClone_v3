@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\WebController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::controller(WebController::class)->group(function () {
+    Route::get('/top-list/wiki/{slug}/{id_key}','home_wiki')->name('top_list_wiki');
 });

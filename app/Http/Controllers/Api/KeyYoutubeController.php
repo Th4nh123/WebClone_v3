@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\HwpKeyGoogle;
 
 class KeyYoutubeController extends Controller
 {
+    public function getKeyYoutube() {
+        return HwpKeyGoogle::where("type", '=', 'youtube')->where("count", '<', '500')->first();
+    }
+
     public function getAllKeyYoutube()
     {
         return HwpKeyGoogle::where("type", '=', 'youtube')->get();
@@ -98,6 +104,19 @@ class KeyYoutubeController extends Controller
     public function getFirstKeyYoutube()
     {
         return HwpKeyGoogle::where("type", '=', 'youtube')->where("count", '=', '500')->first();
+    }
+
+    public function getNextKeyYoutube($key)
+    {
+        try {
+            DB::table("hwp_key_google")->where("hwp_key_google.type", '=', 'youtube')->where("hwp_key_google.key_api", '=', $key)->update(["hwp_key_google.count" => 500]);
+            return array(
+                'success' => true
+            );
+        } catch(\Exception $e) {
+            return array('code'=>500, 'message' => 'k next được key yt');
+        }
+
     }
 
     public function resetAllKeyYoutube()

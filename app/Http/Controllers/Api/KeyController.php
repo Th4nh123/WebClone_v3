@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\HwpKey;
 use Illuminate\Http\Request;
@@ -15,6 +17,12 @@ class KeyController extends Controller
     public function getKeyByIdCam($id_cam)
     {
         return HwpKey::where("id_cam", $id_cam)->get();
+    }
+
+    public function getIdKey($id_cam)
+    {
+        $key = DB::table("hwp_key")->select("id")->where('hwp_key.id_cam', '=', $id_cam)->get()->toArray();
+        return json_encode($key);
     }
 
     public function saveKey(Request $request)
@@ -147,5 +155,56 @@ class KeyController extends Controller
                 'success' => false
             ];
         }
+    }
+
+    public function resetKey(HwpKey $key_word)
+    {
+        if ($key_word->update(['check' => false])) {
+            return [
+                'message' => 'Reset Key Word thành công',
+                'success' => true
+            ];
+        } else {
+            return [
+                'message' => 'Reset Key Word không thành công',
+                'success' => false
+            ];
+        }
+    }
+
+    public function updateKey(HwpKey $key_word)
+    {
+        if ($key_word->update(['check' => true])) {
+            return [
+                'message' => 'Cập nhật key word thành công',
+                'success' => true
+            ];
+        } else {
+            return [
+                'message' => 'Cập nhật key word không thành công',
+                'success' => false
+            ];
+        }
+    }
+
+    public function getDataIdHaveVideo($id_cam)
+    {
+        $video = HwpKey::where("id_cam", '=', $id_cam)->leftJoin('hwp_url', 'hwp_key.id', '=', 'hwp_url.id_key')->where("hwp_url.ky_hieu", '=', 'y')->get()->toArray();
+        return $video;
+    }
+
+    public function getDataIdHaveUrlGoogle($id_cam)
+    {
+        $video = DB::table('hwp_key')->select("hwp_key.id")
+            ->where("hwp_key.id_cam", '=', $id_cam)
+            ->leftJoin('hwp_url', 'hwp_key.id', '=', 'hwp_url.id_key')
+            ->where("hwp_url.ky_hieu", '=', 'w')
+            ->get()->toArray();
+        return $video;
+    }
+
+    public function findLikeKey($name)
+    {
+        return HwpKey::where('ten', 'like', '%' . $name . '%')->get();
     }
 }
